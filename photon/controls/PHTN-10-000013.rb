@@ -9,20 +9,11 @@ the audit capability, and system operation may be adversely affected."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000046-GPOS-00022"
   tag gid: nil
-  tag rid: "The Photon operating system audit log must log space limit problems
-to syslog."
+  tag rid: "PHTN-10-000013"
   tag stig_id: "PHTN-10-000013"
   tag cci: "CCI-000139"
   tag nist: ["AU-5 a", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep \"^space_left_action\" /etc/audit/auditd.conf
 
@@ -31,7 +22,7 @@ Expected result:
 space_left_action = SYSLOG
 
 If the output does not match the expected result, this is a finding."
-  tag fix: "Open /etc/audit/auditd.conf with a text editor and ensure that the
+  desc 'fix', "Open /etc/audit/auditd.conf with a text editor and ensure that the
 \"space_left_action\" line is uncommented and set to the following:
 
 space_left_action = SYSLOG
@@ -39,5 +30,10 @@ space_left_action = SYSLOG
 At the command line, execute the following command:
 
 # service auditd reload"
+
+  describe auditd_conf do
+    its("space_left_action") { should cmp 'SYSLOG'}
+  end
+
 end
 

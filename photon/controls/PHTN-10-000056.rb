@@ -11,20 +11,11 @@ from insider threats and the advanced persistent threat."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000327-GPOS-00127"
   tag gid: nil
-  tag rid: "The Photon operating system must audit the execution of privileged
-functions."
+  tag rid: "PHTN-10-000056"
   tag stig_id: "PHTN-10-000056"
   tag cci: "CCI-002234"
   tag nist: ["AC-6 (9)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command to see a list
+  desc 'check', "At the command line, execute the following command to see a list
 of setuid files:
 
 # find / -xdev -perm -4000 -type f -o -perm -2000 -type f
@@ -44,7 +35,7 @@ A typical corresponding line will look like the below:
 -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F
 auid!=4294967295 -k privileged
 "
-  tag fix: "At the command line, execute the following command to see a list of
+  desc 'fix', "At the command line, execute the following command to see a list of
 setuid files:
 
 # find / -xdev -perm -4000 -type f -o -perm -2000 -type f
@@ -60,5 +51,19 @@ Replace <setuid_path> with each path found in the first command.
 Finally, execute the following command to load the new rules.
 
 # /sbin/augenrules --load"
+
+  results = command('find / -xdev -perm -4000 -type f -o -perm -2000 -type f').stdout.split("\n")
+  
+  results.each do | path |
+    describe.one do
+      describe command("grep #{path} /etc/audit/audit.rules") do
+        its ('stdout.strip') {should match ("-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged")}
+      end
+      describe command("grep #{path} /etc/audit/audit.rules") do
+        its ('stdout.strip') {should match ("-a exit,always -F path=#{path} -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged")}
+      end
+    end
+  end
+
 end
 

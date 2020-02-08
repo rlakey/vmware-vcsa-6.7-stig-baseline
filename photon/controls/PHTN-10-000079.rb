@@ -9,20 +9,11 @@ than the one intended."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00227"
   tag gid: nil
-  tag rid: "The Photon operating system must ensure that root $PATH entries are
-appropriate."
+  tag rid: "PHTN-10-000079"
   tag stig_id: "PHTN-10-000079"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # echo $PATH
 
@@ -31,9 +22,14 @@ Expected result:
 /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/java/jre-vmware/bin:/opt/vmware/bin
 
 If the output does not match the expected result, this is a finding."
-  tag fix: "At the command line, execute the following command:
+  desc 'fix', "At the command line, execute the following command:
 
 # export
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/java/jre-vmware/bin:/opt/vmware/bin"
+
+  describe command('echo $PATH') do
+      its ('stdout.strip') { should cmp '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/java/jre-vmware/bin:/opt/vmware/bin' }
+  end
+
 end
 

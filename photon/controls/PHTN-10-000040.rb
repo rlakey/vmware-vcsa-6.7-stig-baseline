@@ -9,20 +9,11 @@ future action without any manual offloading or cron jobs."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000205-GPOS-00083"
   tag gid: nil
-  tag rid: "The Photon operating system must configure rsyslog to offload
-system logs to a central server."
+  tag rid: "PHTN-10-000040"
   tag stig_id: "PHTN-10-000040"
   tag cci: "CCI-001312"
   tag nist: ["SI-11 a", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # cat /etc/vmware-syslog/syslog.conf
 
@@ -38,7 +29,7 @@ OR
 Navigate to https://<hostname>:5480 to access the Virtual Appliance Management
 Inferface (VAMI). Authenticate and navigate to \"Syslog Configuration\". If
 there is no site-specific syslog server is configured, this is a finding."
-  tag fix: "Open /etc/vmware-syslog/syslog.conf with a text editor. Remove any
+  desc 'fix', "Open /etc/vmware-syslog/syslog.conf with a text editor. Remove any
 existing content and create a new remote server configuration line:
 
 For UDP
@@ -54,5 +45,10 @@ OR
 Navigate to https://<hostname>:5480 to access the Virtual Appliance Management
 Inferface (VAMI). Authenticate and navigate to \"Syslog Configuration\". Click
 \"Edit\" in the top right. Configure a remote syslog server and click \"OK\"."
+
+  describe file ('/etc/vmware-syslog/syslog.conf') do
+    its ('content') { should match /^.*#{input('syslogServer')}.*$/ }
+  end
+
 end
 

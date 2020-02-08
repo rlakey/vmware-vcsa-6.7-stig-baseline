@@ -8,20 +8,11 @@ missing audit entries may be too high."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00227"
   tag gid: nil
-  tag rid: "The Photon operating system must ensure that audit events are
-flushed to disk at proper intervals."
+  tag rid: "PHTN-10-000078"
   tag stig_id: "PHTN-10-000078"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep -E \"freq|flush\" /etc/audit/auditd.conf
 
@@ -33,12 +24,18 @@ freq = 50
 If the output does not match the expected result, this is a finding.
 
 "
-  tag fix: "Open /etc/audit/auditd.conf with a text editor.
+  desc 'fix', "Open /etc/audit/auditd.conf with a text editor.
 
 Ensure that the below line is present and any existing 'flush' and 'freq'
 settings are removed.
 
 flush = INCREMENTAL_ASYNC
 freq = 50"
+
+  describe auditd_conf do
+    its("flush") { should cmp 'INCREMENTAL_ASYNC'}
+    its("freq") { should cmp '50'}
+  end
+
 end
 

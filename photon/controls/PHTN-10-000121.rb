@@ -8,19 +8,11 @@ allow the new user to read and write file there."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00228"
   tag gid: nil
-  tag rid: "The Photon operating system must set the UMASK parameter correctly."
+  tag rid: "PHTN-10-000121"
   tag stig_id: "PHTN-10-000121"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep UMASK /etc/login.defs
 
@@ -29,9 +21,14 @@ Expected result:
 UMASK 077
 
 If the output does not match the expected result, this a finding."
-  tag fix: "Open /etc/login.defs with a text editor and ensure that the
+  desc 'fix', "Open /etc/login.defs with a text editor and ensure that the
 \"UMASK\" line is uncommented and set to the following:
 
 UMASK 077"
+
+  describe login_defs do
+    its('UMASK') { should cmp '077' }
+  end
+
 end
 

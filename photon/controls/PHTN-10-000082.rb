@@ -8,20 +8,11 @@ information is not exposed to unprivileged users."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00227"
   tag gid: nil
-  tag rid: "The Photon operating system must configure a secure umask for all
-shells."
+  tag rid: "PHTN-10-000082"
   tag stig_id: "PHTN-10-000082"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # cat /etc/profile.d/umask.sh
 
@@ -35,7 +26,7 @@ else
 fi
 
 If the output does not match the expected result, this is a finding."
-  tag fix: "Open /etc/profile.d/umask.sh with a text editor.
+  desc 'fix', "Open /etc/profile.d/umask.sh with a text editor.
 
 Set the contents as follows:
 
@@ -45,5 +36,12 @@ if [ \"$(id -gn)\" = \"$(id -un)\" -a $EUID -gt 99 ] ; then
 else
   umask 027
 fi"
+
+  describe file('/etc/profile.d/umask.sh') do
+    its('content') { should match "# By default, the umask should be set.\nif [ \"$(id -gn)\" = \"$(id -un)\" -a $EUID -gt 99 ] ; then\n  umask 002\nelse\n  umask 027\nfi\n" }
+    its('content') { should match 'umask 002' }
+    its('content') { should match 'umask 027' }
+  end
+
 end
 

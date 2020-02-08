@@ -10,25 +10,21 @@ longer available for use."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000395-GPOS-00175"
   tag gid: nil
-  tag rid: "The Photon operating system must use OpenSSH for remote maintenance
-sessions."
+  tag rid: "PHTN-10-000068"
   tag stig_id: "PHTN-10-000068"
   tag cci: "CCI-002891"
   tag nist: ["MA-4 (7)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # rpm -qa|grep openssh
 
 If there is no output, this is a finding."
-  tag fix: "Installing openssh manually is not supported by VMware. Revert to a
+  desc 'fix', "Installing openssh manually is not supported by VMware. Revert to a
 previous backup or redeploy the VCSA."
+
+  describe command('rpm -qa|grep openssh') do
+    its ('stdout') { should_not eq '' }
+  end
+
 end
 

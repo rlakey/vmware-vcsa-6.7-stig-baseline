@@ -9,33 +9,29 @@ related to DoS attacks."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000027-GPOS-00008"
   tag gid: nil
-  tag rid: "The Photon operating system must limit the number of concurrent
-sessions to ten for all accounts and/or account types."
+  tag rid: "PHTN-10-000004"
   tag stig_id: "PHTN-10-000004"
   tag cci: "CCI-000054"
   tag nist: ["AC-10", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 #  grep \"^[^#].*maxlogins.*\" /etc/security/limits.conf
 
 Expected result:
 
-* \xA0 \xA0 \xA0 \xA0 \xA0 \xA0 \xA0hard \xA0 \xA0maxlogins \xA0 \xA0 \xA010
+* hard maxlogins 10
 
 If the output does not match the expected result, this is a finding.
 
 Note: The expected result may be repeated multiple times."
-  tag fix: "At the command line, execute the following command:
+  desc 'fix', "At the command line, execute the following command:
 
-# echo '* \xA0 \xA0 \xA0 \xA0 \xA0 \xA0 \xA0hard \xA0 \xA0maxlogins \xA0 \xA0
-\xA010' >> /etc/security/limits.conf"
+# echo '* hard maxlogins 
+10' >> /etc/security/limits.conf"
+
+  describe limits_conf('/etc/security/limits.conf') do
+    its('*') { should include ['hard', 'maxlogins', '10'] }
+  end
+
 end
 

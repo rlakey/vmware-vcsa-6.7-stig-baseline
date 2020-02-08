@@ -10,20 +10,11 @@ unintentional reboot. "
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00227"
   tag gid: nil
-  tag rid: "The Photon operating system must be configured so that the x86
-Ctrl-Alt-Delete key sequence is disabled on the command line."
+  tag rid: "PHTN-10-000095"
   tag stig_id: "PHTN-10-000095"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # systemctl status ctrl-alt-del.target
 
@@ -34,8 +25,14 @@ Loaded: masked (/dev/null; bad)
 Active: inactive (dead)
 
 If the output does not match the expected result, this is a finding"
-  tag fix: "At the command line, execute the following command:
+  desc 'fix', "At the command line, execute the following command:
 
 # systemctl mask ctrl-alt-del.target"
+
+  describe systemd_service('ctrl-alt-del.target') do
+    it { should_not be_enabled}
+    it { should_not be_running}
+  end
+
 end
 

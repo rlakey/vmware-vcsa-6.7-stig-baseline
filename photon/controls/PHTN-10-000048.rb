@@ -10,25 +10,16 @@ includes processes created before auditd starts. "
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000254-GPOS-00095"
   tag gid: nil
-  tag rid: "The Photon operating system must initiate auditing as part of the
-boot process."
+  tag rid: "PHTN-10-000048"
   tag stig_id: "PHTN-10-000048"
   tag cci: "CCI-001464"
   tag nist: ["AU-14 (1)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep \"audit=1\" /proc/cmdline
 
 If no results are returned, this is a finding."
-  tag fix: "Open /boot/grub2/grub.cfg with a text editor and locate the
+  desc 'fix', "Open /boot/grub2/grub.cfg with a text editor and locate the
 following line inside the 'menuentry \"Photon\" {}' block:
 
 linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline
@@ -40,5 +31,10 @@ linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline
 coredump_filter=0x37 consoleblank=0 audit=1
 
 Reboot the system for the change to take effect."
+
+  describe file ('/boot/grub2/grub.cfg') do
+      its ('content'){should match /^(?=.*?\blinux\b)(?=.*?\bphoton_linux\b)(?=.*?\bconsoleblank\b)(?=.*?\baudit=1\b).*$/}
+  end
+
 end
 

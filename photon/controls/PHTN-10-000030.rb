@@ -10,30 +10,26 @@ is a password that is not changed as per policy requirements."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000077-GPOS-00045"
   tag gid: nil
-  tag rid: "The Photon operating system must ensure that the old passwords are
-being stored."
+  tag rid: "PHTN-10-000030"
   tag stig_id: "PHTN-10-000030"
   tag cci: "CCI-000200"
   tag nist: ["IA-5 (1) (e)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # ls -al /etc/security/opasswd
 
 If /etc/security/opasswd does not exist, this is a finding.
 
 "
-  tag fix: "At the command line, execute the following commands:
+  desc 'fix', "At the command line, execute the following commands:
 
 # touch /etc/security/opasswd
 # chown root:root /etc/security/opasswd
 # chmod 0600 /etc/security/opasswd"
+
+  describe file('/etc/security/opasswd') do
+    it { should exist }
+  end
+
 end
 

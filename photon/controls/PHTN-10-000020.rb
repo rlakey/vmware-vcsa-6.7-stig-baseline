@@ -9,20 +9,11 @@ abuse among both authorized and unauthorized users."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000064-GPOS-00033"
   tag gid: nil
-  tag rid: "The Photon operating system must generate audit records when
-successful/unsuccessful attempts to access privileges occur."
+  tag rid: "PHTN-10-000020"
   tag stig_id: "PHTN-10-000020"
   tag cci: "CCI-000172"
   tag nist: ["AU-12 c", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # auditctl -l | grep chmod
 
@@ -43,7 +34,7 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
 -k perm_mod
 
 If the output does not match the expected result, this is a finding."
-  tag fix: "Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add
+  desc 'fix', "Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add
 the following lines:
 
 -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F
@@ -59,6 +50,14 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
 
 At the command line, execute the following commands:
 
-#\xA0/sbin/augenrules --load"
+#/sbin/augenrules --load"
+
+  describe auditd do
+    its("lines") { should include %r{-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=-1} }
+    its("lines") { should include %r{-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat} }
+    its("lines") { should include %r{-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=-1} }
+    its("lines") { should include %r{-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat} }
+  end
+
 end
 

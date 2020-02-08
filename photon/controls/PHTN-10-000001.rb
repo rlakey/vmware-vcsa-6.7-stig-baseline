@@ -8,7 +8,7 @@ creation actions provides logging that can be used for forensic purposes."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000004-GPOS-00004"
   tag gid: nil
-  tag rid: "The Photon operating system must audit all account creations."
+  tag rid: "PHTN-10-000001"
   tag stig_id: "PHTN-10-000001"
   tag cci: "CCI-000018"
   tag nist: ["AC-2 (4)", "Rev_4"]
@@ -37,3 +37,4 @@ least 'x', this is a finding."
   end
 
 end
+

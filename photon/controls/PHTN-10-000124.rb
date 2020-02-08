@@ -8,34 +8,23 @@ access all files on the system. GRUB2 is the boot loader for Photon OS and is
 can be configured to require a password to boot into single-user mode or make
 modifications to the boot menu.
 
-    Note: The VCSA does not support building grub changes via grub2-mkconfig.
-  "
+    Note: The VCSA does not support building grub changes via grub2-mkconfig."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000080-GPOS-00048"
   tag gid: nil
-  tag rid: "The Photon operating system must enforce approved authorizations
-for logical access to information and system resources in accordance with
-applicable access control policies."
+  tag rid: "PHTN-10-000124"
   tag stig_id: "PHTN-10-000124"
   tag cci: "CCI-000213"
   tag nist: ["AC-3", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep -i ^password_pbkdf2 /boot/grub2/grub.cfg
 
 If there is not output, this is a finding.
 
 If the output does not begin with \"password_pbkdf2 root\", this is a finding."
-  tag fix: "At the command line, execute the following command:
+  desc 'fix', "At the command line, execute the following command:
 
 # grub2-mkpasswd-pbkdf2
 
@@ -107,5 +96,10 @@ coredump_filter=0x37 consoleblank=0
         initrd \"/\"$photon_initrd
     fi
 }"
+
+  describe command('grep -i ^password_pbkdf2 /boot/grub2/grub.cfg') do
+      its ('stdout.strip') { should match /.*password_pbkdf2 root.*/ }
+  end
+
 end
 

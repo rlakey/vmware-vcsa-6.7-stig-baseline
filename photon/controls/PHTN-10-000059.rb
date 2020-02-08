@@ -10,20 +10,11 @@ ISSO in the event of a central log processing failure."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000341-GPOS-00132"
   tag gid: nil
-  tag rid: "The Photon operating system must configure a cron job to rotate
-auditd logs daily."
+  tag rid: "PHTN-10-000059"
   tag stig_id: "PHTN-10-000059"
   tag cci: "CCI-001849"
   tag nist: ["AU-4", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # cat /etc/cron.daily/audit-rotate
 
@@ -34,7 +25,7 @@ service auditd rotate
 
 If the output of the command does not match the expected result, this is a
 finding."
-  tag fix: "If /etc/cron.daily/audit-rotate does not exist, run the following
+  desc 'fix', "If /etc/cron.daily/audit-rotate does not exist, run the following
 commands:
 
 # touch /etc/cron.daily/audit-rotate
@@ -47,5 +38,12 @@ follows:
 #!/bin/bash
 service auditd rotate
 "
+
+  describe file('/etc/cron.daily/audit-rotate') do
+    it { should exist }
+    its('content') { should match %r{#!/bin/bash} }
+    its('content') { should match %r{service auditd rotate} }
+  end
+
 end
 

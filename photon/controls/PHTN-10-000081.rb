@@ -8,28 +8,26 @@ disabled until and unless otherwise directed by VMware support."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00227"
   tag gid: nil
-  tag rid: "The Photon operating system must disabled the debug-shell service."
+  tag rid: "PHTN-10-000081"
   tag stig_id: "PHTN-10-000081"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # systemctl status debug-shell.service|grep -E --color=always disabled
 
 If the debug-shell service is not disabled, this is a finding."
-  tag fix: "At the command line, execute the following commands:
+  desc 'fix', "At the command line, execute the following commands:
 
 # systemctl stop debug-shell.service
 # systemctl disable debug-shell.service
 
 Reboot for changes to take effect."
+
+  describe systemd_service('debug-shell.service') do
+    it { should_not be_enabled}
+    it { should_not be_running}
+  end
+
 end
 

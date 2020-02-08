@@ -9,20 +9,11 @@ networks, but is helpful for end hosts and routers serving small networks."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000480-GPOS-00227"
   tag gid: nil
-  tag rid: "The Photon operating system must use a reverse-path filter for IPv4
-network traffic."
+  tag rid: "PHTN-10-000110"
   tag stig_id: "PHTN-10-000110"
   tag cci: "CCI-000366"
   tag nist: ["CM-6 b", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # /sbin/sysctl -a --pattern \"net.ipv4.conf.(all|default|eth.*)\\.rp_filter\"
 
@@ -36,10 +27,23 @@ If the output does not match the expected result, this is a finding.
 
 Note: The number of ethx lines returned is dependant on the number of
 interfaces. Every ethx entry must be set to 1."
-  tag fix: "At the command line, execute the following command:
+  desc 'fix', "At the command line, execute the following command:
 
 # for SETTING in $(/sbin/sysctl -aN --pattern
 \"net.ipv4.conf.(all|default|eth.*)\\.rp_filter\"); do sed -i -e
 \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=1>>/etc/sysctl.conf; done"
+
+  describe kernel_parameter('net.ipv4.conf.all.rp_filter') do
+    its('value') { should eq 1 }
+  end
+
+  describe kernel_parameter('net.ipv4.conf.default.rp_filter') do
+    its('value') { should eq 1 }
+  end
+
+  describe kernel_parameter('net.ipv4.conf.eth0.rp_filter') do
+    its('value') { should eq 1 }
+  end
+
 end
 

@@ -10,28 +10,25 @@ information it provides cannot be trusted."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000278-GPOS-00108"
   tag gid: nil
-  tag rid: "The Photon operating system package files must not be modified."
+  tag rid: "PHTN-10-000053"
   tag stig_id: "PHTN-10-000053"
   tag cci: "CCI-001496"
   tag nist: ["AU-9 (3)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "Use the verification capability of rpm to check the MD5 hashes of
+  desc 'check', "Use the verification capability of rpm to check the MD5 hashes of
 the audit files on disk versus the expected ones from the installation package.
 At the command line, execute the following command:
 
 # rpm -V audit | grep \"^..5\" | grep -v \"^...........c\"
 
 If there is output, this is a finding."
-  tag fix: "If the audit system binaries have been altered the system must be
+  desc 'fix', "If the audit system binaries have been altered the system must be
 taken offline and your ISSM must be notified immediately. Reinstalling the
 audit tools is not supported. The appliance should be restored from a backup, a
 snapshot or redeployed once the root cause is remediated."
+
+  describe command('rpm -V audit | grep "^..5" | grep -v "^...........c"') do
+      its ('stdout') { should eq '' }
+  end
+
 end
 

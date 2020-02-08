@@ -11,25 +11,16 @@ techniques."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000433-GPOS-00193"
   tag gid: nil
-  tag rid: "The Photon operating system must implement address space layout
-randomization to protect its memory from unauthorized code execution."
+  tag rid: "PHTN-10-000069"
   tag stig_id: "PHTN-10-000069"
   tag cci: "CCI-002824"
   tag nist: ["SI-16", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # cat /proc/sys/kernel/randomize_va_space
 
 If the value of randomize_va_space is not 2, this is a finding."
-  tag fix: "Open /etc/sysctl.d/50-security-hardening.conf with a text editor
+  desc 'fix', "Open /etc/sysctl.d/50-security-hardening.conf with a text editor
 and ensure that the \"randomize_va_space\" is uncommented and set to the
 following:
 
@@ -38,5 +29,10 @@ kernel.randomize_va_space=2
 At the command line, execute the following command:
 
 # sysctl --system"
+
+  describe kernel_parameter('kernel.randomize_va_space') do
+    its('value') { should eq 2 }
+  end
+
 end
 

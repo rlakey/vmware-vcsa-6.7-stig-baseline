@@ -20,26 +20,16 @@ software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and
 software implementing the monitoring port of an Ethernet switch).
 
     The operating system can meet this requirement through leveraging a
-cryptographic module.
-  "
+cryptographic module."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000394-GPOS-00174"
   tag gid: nil
-  tag rid: "The Photon operating system must configure sshd to use prefered
-ciphers."
+  tag rid: "PHTN-10-000067"
   tag stig_id: "PHTN-10-000067"
   tag cci: "CCI-003123"
   tag nist: ["MA-4 (6)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # sshd -T|&grep -i Ciphers
 
@@ -51,7 +41,7 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 If the output does not match the expected result, this is a finding.
 
 "
-  tag fix: "Open /etc/ssh/sshd_config with a text editor and ensure that the
+  desc 'fix', "Open /etc/ssh/sshd_config with a text editor and ensure that the
 \"Ciphers\" line is uncommented and set to the following:
 
 Ciphers
@@ -60,5 +50,10 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 At the command line, execute the following command:
 
 # service sshd reload"
+
+  describe command('sshd -T|&grep -i ciphers') do
+    its ('stdout.strip') { should cmp 'ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr' }
+  end
+
 end
 

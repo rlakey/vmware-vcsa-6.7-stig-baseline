@@ -13,26 +13,16 @@ connected over a network.
 
     Organizations should consider endpoints that may not have regular access to
 the authoritative time server (e.g., mobile, teleworking, and tactical
-endpoints).
-  "
+endpoints)."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000355-GPOS-00143"
   tag gid: nil
-  tag rid: "The Photon operating system must be configured to synchronize with
-an approved DoD time source."
+  tag rid: "PHTN-10-000061"
   tag stig_id: "PHTN-10-000061"
   tag cci: "CCI-001891"
   tag nist: ["AU-8 (1) (a)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep -E '^\\s*(server|peer|multicastclient)' /etc/ntp.conf
 
@@ -47,7 +37,7 @@ OR
 Navigate to https://<hostname>:5480 to access the Virtual Appliance Management
 Inferface (VAMI). Authenticate and navigate to \"Time\". If no appropriate time
 server is specified, this is a finding."
-  tag fix: "Open /etc/ntp.conf with a text editor and set it's contents to the
+  desc 'fix', "Open /etc/ntp.conf with a text editor and set it's contents to the
 following:
 
 tinker panic 0
@@ -67,5 +57,20 @@ OR
 Navigate to https://<hostname>:5480 to access the Virtual Appliance Management
 Inferface (VAMI). Authenticate and navigate to \"Time\". Click \"Edit\" in the
 top right and configure at least one appropriate NTP server. Click \"OK\"."
+
+  describe ntp_conf do
+    its ('server') { should_not eq nil }
+  end
+
+  describe ntp_conf do
+    its ('server') { should eq input('ntpServer') }
+  end
+
+  describe systemd_service('ntpd') do
+    it { should be_installed}
+    it { should be_enabled}
+    it { should be_running}
+  end
+
 end
 

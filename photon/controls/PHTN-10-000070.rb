@@ -9,20 +9,11 @@ software automatically from the information system."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000437-GPOS-00194"
   tag gid: nil
-  tag rid: "The Photon operating system must remove all software components
-after updated versions have been installed."
+  tag rid: "PHTN-10-000070"
   tag stig_id: "PHTN-10-000070"
   tag cci: "CCI-002617"
   tag nist: ["SI-2 (6)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # grep -i \"^clean_requirements_on_remove\" /etc/tdnf/tdnf.conf
 
@@ -31,9 +22,14 @@ Expected result:
 clean_requirements_on_remove=true
 
 If the output does not match the expected result, this is a finding."
-  tag fix: "Open /etc/tdnf/tdnf.conf with a text editor. Remove any existing
+  desc 'fix', "Open /etc/tdnf/tdnf.conf with a text editor. Remove any existing
 \"clean_requirements_on_remove\" line and ensure the following line is present:
 
 clean_requirements_on_remove=true"
+
+  describe command('grep -i "^clean_requirements_on_remove" /etc/tdnf/tdnf.conf') do
+      its ('stdout.strip') { should cmp 'clean_requirements_on_remove=true' }
+  end
+
 end
 

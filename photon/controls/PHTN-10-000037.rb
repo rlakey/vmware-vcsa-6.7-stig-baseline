@@ -10,19 +10,11 @@ enables the system to continue servicing valid connection requests."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000142-GPOS-00071"
   tag gid: nil
-  tag rid: "The Photon operating system must use TCP syncookies."
+  tag rid: "PHTN-10-000037"
   tag stig_id: "PHTN-10-000037"
   tag cci: "CCI-001095"
   tag nist: ["SC-5 (2)", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # /sbin/sysctl -a --pattern /tcp_syncookies
 
@@ -31,10 +23,15 @@ Expected result:
 net.ipv4.tcp_syncookies = 1
 
 If the output does not match the expected result, this is a finding."
-  tag fix: "At the command line, execute the following commands:
+  desc 'fix', "At the command line, execute the following commands:
 
 # sed -i -e \"/^net.ipv4.tcp_syncookies/d\" /etc/sysctl.conf
 # echo net.ipv4.tcp_syncookies=1>>/etc/sysctl.conf
 "
+
+  describe kernel_parameter('net.ipv4.tcp_syncookies') do
+    its('value') { should eq 1 }
+  end
+
 end
 

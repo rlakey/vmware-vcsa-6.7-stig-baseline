@@ -9,20 +9,11 @@ Executive Orders, directives, policies, regulations, standards, and guidance."
   tag severity: "CAT II"
   tag gtitle: "SRG-OS-000023-GPOS-00006"
   tag gid: nil
-  tag rid: "The Photon operating system must display the Standard Mandatory DoD
-Notice and Consent Banner before granting SSH access."
+  tag rid: "PHTN-10-000003"
   tag stig_id: "PHTN-10-000003"
   tag cci: "CCI-000048"
   tag nist: ["AC-8 a", "Rev_4"]
-  tag documentable: nil
-  tag mitigations: nil
-  tag severity_override_guidance: nil
-  tag potential_impacts: nil
-  tag third_party_tools: nil
-  tag mitigation_controls: nil
-  tag responsibility: nil
-  tag ia_controls: nil
-  tag check: "At the command line, execute the following command:
+  desc 'check', "At the command line, execute the following command:
 
 # sshd -T|&grep -i Banner
 
@@ -34,7 +25,7 @@ If the output does not match the expected result, this is a finding.
 
 Next, open /etc/issue with a text editor. If the file does not contain the
 Standard Mandatory DoD Notice and Consent Banner, this is a finding."
-  tag fix: "At the command line, execute the following commands:
+  desc 'fix', "At the command line, execute the following commands:
 
 # cp /etc/issue.DoD /etc/issue
 
@@ -71,5 +62,14 @@ Agreement for details.
 At the command line, execute the following command:
 
 # service sshd reload"
+
+  describe command('sshd -T|&grep -i Banner') do
+    its ('stdout.strip') { should cmp 'Banner /etc/issue' }
+  end
+
+  describe file('/etc/issue') do
+    its ('content') {should match /You are accessing a U\.S\. Government/}
+  end
+
 end
 

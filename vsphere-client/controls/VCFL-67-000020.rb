@@ -30,7 +30,7 @@ Configure each <Connector> node with the following:
 acceptCount=\"300\""
 
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
-    its(['Server/Service/Connector/@acceptCount']) { should cmp '300'}
+    its(['Server/Service/Connector/@acceptCount']) { should be_in ["300"]}
   end
 
 end

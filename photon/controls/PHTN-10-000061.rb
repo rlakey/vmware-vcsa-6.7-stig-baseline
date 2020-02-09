@@ -63,7 +63,7 @@ top right and configure at least one appropriate NTP server. Click \"OK\"."
   end
 
   describe ntp_conf do
-    its ('server') { should eq input('ntpServer') }
+    its ('server') { should be_in ["#{input('ntpServer1')}","#{input('ntpServer2')}"] }
   end
 
   describe systemd_service('ntpd') do

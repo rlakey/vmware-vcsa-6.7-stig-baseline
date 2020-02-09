@@ -9,8 +9,14 @@ version: 6.7.0
 
 inputs:
 - name: photonIp
+  type: string
   value: "x.x.x.x"  #Enter IP for PhotonOS
-- name: ntpServer
+- name: ntpServer1
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: ntpServer2
+  type: string
   value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
 - name: syslogServer
+  type: string
   value: "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port

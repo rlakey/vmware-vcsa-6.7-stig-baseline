@@ -34,8 +34,16 @@ At the command line, execute the following command:
 
 # service auditd reload"
 
-  describe auditd_conf do
-    its("write_logs") { should cmp 'yes'}
+  describe.one do
+
+    describe auditd_conf do
+      its("write_logs") { should eq nil }
+    end
+
+    describe auditd_conf do
+      its("write_logs") { should cmp 'yes'}
+    end
+
   end
 
 end

@@ -11,8 +11,8 @@ Inspec profiles for the VCSA are available for each component or can be run all 
 
 ## How to run Inspec locally from Powershell on Windows for the wrapper profile
 
-**Assumes vcsa profiles are downloaded to C:\Inspec\Profiles\vmware-vcsa-6.7-stig-baseline**  
-**Note inputs are only needed for the Photon Profile**  
+**Note - assumes vcsa profiles are downloaded to C:\Inspec\Profiles\vmware-vcsa-6.7-stig-baseline**  
+**Note - inputs are only needed for the Photon Profile**  
 
 Run all profiles against a target vCenter appliance with needed inputs and output results to CLI
 ```
